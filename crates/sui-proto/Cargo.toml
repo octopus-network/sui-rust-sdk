@@ -1,0 +1,22 @@
+[package]
+name = "sui-proto"
+version = "0.1.0"
+authors = ["Brandon Williams <brandon@mystenlabs.com>"]
+repository = "https://github.com/mystenlabs/sui-rust-sdk/"
+license = "Apache-2.0"
+edition = "2021"
+description = "Sui protobuf definitions"
+
+[dependencies]
+bytes = "1"
+tap = "1.0.1"
+sui-sdk-types = { path = "../sui-sdk-types" }
+roaring = { version = "0.10.6", default-features = false }
+prost = "0.13.3"
+prost-types = "0.13.3"
+
+[dev-dependencies]
+prost-build = "0.13.3"
+
+[build-dependencies]
+prost-build = "0.13.3"

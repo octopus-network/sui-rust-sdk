@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+package sui.node.v2;
+
+import "sui.types.proto";
+import "google/protobuf/empty.proto";
+
+// Rpc Node interface
+service Node {
+    //
+}
+
+service Subscription {
+    rpc Subscribe(SubscribeRequest) returns (stream SubscribeResponse);
+}
+
+message SubscribeRequest {
+}
+
+message SubscribeResponse {
+}
+
+message GetTransactionResponse {
+  // The digest of this transaction
+  sui.types.Digest digest = 1;
+  optional sui.types.Transaction transaction = 2;
+  repeated sui.types.UserSignature signatures = 3;
+  optional sui.types.TransactionEffects effects = 4;
+  optional sui.types.TransactionEvents events = 5;
+  optional uint64 checkpoint = 6;
+  optional uint64 timestamp_ms = 7;
+}
+
+message GetObjectResponse {
+  // The digest of this object
+  sui.types.Digest digest = 1;
+  optional sui.types.Object object = 2;
+}
+
+message GetCheckpointResponse {
+  // The digest of this CheckpointSummary
+  sui.types.Digest digest = 1;
+  optional sui.types.CheckpointSummary summary = 2;
+  optional sui.types.ValidatorAggregatedSignature signature = 3;
+  optional sui.types.CheckpointContents contents = 4;
+}
+
+message Checkpoint {
+  optional sui.types.CheckpointSummary summary = 1;
+  optional sui.types.ValidatorAggregatedSignature signature = 2;
+  optional sui.types.CheckpointContents contents = 3;
+  repeated CheckpointTransaction transactions = 4;
+}
+
+message CheckpointTransaction {
+  optional sui.types.Transaction transaction = 1;
+  repeated sui.types.UserSignature signatures = 2;
+  optional sui.types.TransactionEffects effects = 3;
+  optional sui.types.TransactionEvents events = 4;
+  repeated sui.types.Object input_objects = 5;
+  repeated sui.types.Object output_objects = 6;
+}
+
+message ListCheckpointResponse {
+  repeated GetCheckpointResponse checkpoints = 1;
+}
+
+message ListTransactionsResponse {
+  repeated GetTransactionResponse transactions = 1;
+}
+
+message I128 {
+  bytes bytes = 1;
+}
+
+message BalanceChange {
+  sui.types.Address address = 1;
+  sui.types.TypeTag coin_type = 2;
+  I128 amount = 3;
+}
+
+message BalanceChanges {
+  repeated BalanceChange balance_changes = 4;
+}
+
+message EffectsFinality {
+  optional sui.types.ValidatorAggregatedSignature signature = 1;
+  optional uint64 checkpoint = 2;
+  optional bool quorum_executed = 3;
+}
+
+message TransactionExecutionResponse {
+  optional sui.types.TransactionEffects effects = 1;
+  optional EffectsFinality finality = 2;
+  optional sui.types.TransactionEvents events = 3;
+  optional BalanceChanges balance_changes = 4;
+  repeated sui.types.Object input_objects = 5;
+  repeated sui.types.Object output_objects = 6;
+}
+
+message TransactionSimulationResponse {
+  optional sui.types.TransactionEffects effects = 1;
+  optional sui.types.TransactionEvents events = 2;
+  repeated BalanceChange balance_changes = 3;
+  repeated sui.types.Object input_objects = 4;
+  repeated sui.types.Object output_objects = 5;
+}
+
+message ResolveTransactionResponse {
+  optional sui.types.Transaction transaction = 1;
+  optional TransactionSimulationResponse simulation = 2;
+}
+
+message ExecuteTransactionRequest {
+  optional sui.types.Transaction transaction = 1;
+  repeated sui.types.UserSignature signatures = 2;
+}
+
+message SimulateTransactionRequest {
+  optional sui.types.Transaction transaction = 1;
+}
