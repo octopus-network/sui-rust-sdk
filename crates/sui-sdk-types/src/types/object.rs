@@ -109,7 +109,7 @@ pub enum ObjectData {
 )]
 #[cfg_attr(test, derive(test_strategy::Arbitrary))]
 pub struct MovePackage {
-    id: ObjectId,
+    pub id: ObjectId,
     /// Most move packages are uniquely identified by their ID (i.e. there is only one version per
     /// ID), but the version is still stored because one package may be an upgrade of another (at a
     /// different ID), in which case its version will be one greater than the version of the
@@ -121,7 +121,7 @@ pub struct MovePackage {
     /// In all cases, packages are referred to by move calls using just their ID, and they are
     /// always loaded at their latest version.
     #[cfg_attr(feature = "serde", serde(with = "crate::_serde::ReadableDisplay"))]
-    version: Version,
+    pub version: Version,
 
     #[cfg_attr(
         feature = "serde",
@@ -133,11 +133,11 @@ pub struct MovePackage {
             proptest::collection::btree_map(proptest::arbitrary::any::<Identifier>(), proptest::collection::vec(proptest::arbitrary::any::<u8>(), 0..=1024), 0..=5)
         )
     )]
-    modules: BTreeMap<Identifier, Vec<u8>>,
+    pub modules: BTreeMap<Identifier, Vec<u8>>,
 
     /// Maps struct/module to a package version where it was first defined, stored as a vector for
     /// simple serialization and deserialization.
-    type_origin_table: Vec<TypeOrigin>,
+    pub type_origin_table: Vec<TypeOrigin>,
 
     // For each dependency, maps original package ID to the info about the (upgraded) dependency
     // version that this package is using
@@ -147,7 +147,7 @@ pub struct MovePackage {
             proptest::collection::btree_map(proptest::arbitrary::any::<ObjectId>(), proptest::arbitrary::any::<UpgradeInfo>(), 0..=5)
         )
     )]
-    linkage_table: BTreeMap<ObjectId, UpgradeInfo>,
+    pub linkage_table: BTreeMap<ObjectId, UpgradeInfo>,
 }
 
 /// Identifies a struct and the module it was defined in
