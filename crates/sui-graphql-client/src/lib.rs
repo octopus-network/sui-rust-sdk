@@ -1334,8 +1334,8 @@ impl Client {
                         Error::msg(format!("Cannot decode bcs bytes into MovePackage: {e}"))
                     })?;
 
-                let effects = previous_transaction_block.map(|x| x.effects).flatten();
-                let effects = effects.map(|x| x.bcs).flatten();
+                let effects = previous_transaction_block.and_then(|x| x.effects);
+                let effects = effects.and_then(|x| x.bcs);
                 let bcs = effects
                     .map(|x| base64ct::Base64::decode_vec(x.0.as_str()))
                     .transpose()
@@ -1350,13 +1350,10 @@ impl Client {
                             "Cannot decode bcs bytes into TransactionEffects: {e}"
                         ))
                     })?;
-                let epoch = effects
-                    .map(|x| match x {
-                        TransactionEffects::V2(e) => Some(e.epoch),
-                        TransactionEffects::V1(e) => Some(e.epoch),
-                        _ => None,
-                    })
-                    .flatten();
+                let epoch = effects.map(|e| match e {
+                    TransactionEffects::V1(e) => e.epoch,
+                    TransactionEffects::V2(e) => e.epoch,
+                });
 
                 output.push((package, version, epoch));
             }
