@@ -18,7 +18,7 @@ pub struct TransactionEffectsV1 {
     status: ExecutionStatus,
     /// The epoch when this transaction was executed.
     #[cfg_attr(feature = "schemars", schemars(with = "crate::_schemars::U64"))]
-    epoch: EpochId,
+    pub epoch: EpochId,
     gas_used: GasCostSummary,
     /// The version that every modified (mutated or deleted) object had before it was modified by
     /// this transaction.

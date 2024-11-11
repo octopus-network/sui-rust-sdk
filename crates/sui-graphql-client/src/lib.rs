@@ -1353,6 +1353,7 @@ impl Client {
                 let epoch = effects
                     .map(|x| match x {
                         TransactionEffects::V2(e) => Some(e.epoch),
+                        TransactionEffects::V1(e) => Some(e.epoch),
                         _ => None,
                     })
                     .flatten();
