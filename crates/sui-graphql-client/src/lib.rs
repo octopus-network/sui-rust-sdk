@@ -82,6 +82,7 @@ use streams::stream_paginated_query;
 use sui_types::types::framework::Coin;
 use sui_types::types::Address;
 use sui_types::types::CheckpointContentsDigest;
+use sui_types::types::CheckpointDigest;
 use sui_types::types::CheckpointSequenceNumber;
 use sui_types::types::CheckpointSummary;
 use sui_types::types::Event;
@@ -646,7 +647,7 @@ impl Client {
     /// provided, it will use the last known checkpoint id.
     pub async fn checkpoint(
         &self,
-        digest: Option<CheckpointContentsDigest>,
+        digest: Option<CheckpointDigest>,
         seq_num: Option<u64>,
     ) -> Result<Option<CheckpointSummary>> {
         if digest.is_some() && seq_num.is_some() {
