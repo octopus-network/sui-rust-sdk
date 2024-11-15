@@ -486,7 +486,7 @@ impl Client {
     /// checkpoint digest.
     pub async fn total_transaction_blocks_by_digest(
         &self,
-        digest: CheckpointContentsDigest,
+        digest: CheckpointDigest,
     ) -> Result<Option<u64>> {
         self.internal_total_transaction_blocks(Some(digest.to_string()), None)
             .await
@@ -1714,6 +1714,7 @@ impl Client {
 mod tests {
     use base64ct::Encoding;
     use futures::StreamExt;
+    use sui_types::types::CheckpointDigest;
     use sui_types::types::Ed25519PublicKey;
     use sui_types::types::TypeTag;
 
@@ -2141,8 +2142,9 @@ mod tests {
         let chckp = client.checkpoint(None, Some(chckp_id)).await;
         assert!(chckp.is_ok());
         let digest = chckp.unwrap().unwrap().content_digest;
+        let chckp_digest = CheckpointDigest::from_bytes(&digest.inner()).unwrap();
         let total_transaction_blocks = client
-            .total_transaction_blocks_by_digest(digest)
+            .total_transaction_blocks_by_digest(chckp_digest)
             .await
             .unwrap()
             .unwrap();
