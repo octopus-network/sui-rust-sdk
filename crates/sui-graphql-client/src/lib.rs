@@ -81,7 +81,6 @@ use streams::stream_paginated_query;
 
 use sui_types::types::framework::Coin;
 use sui_types::types::Address;
-use sui_types::types::CheckpointContentsDigest;
 use sui_types::types::CheckpointDigest;
 use sui_types::types::CheckpointSequenceNumber;
 use sui_types::types::CheckpointSummary;
