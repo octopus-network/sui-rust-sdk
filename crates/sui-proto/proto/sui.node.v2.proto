@@ -3,15 +3,41 @@ syntax = "proto3";
 package sui.node.v2;
 
 import "sui.types.proto";
+import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
 // Rpc Node interface
 service Node {
-    //
+    rpc GetNodeInfo(google.protobuf.Empty) returns (NodeInfoResponse);
 }
 
 service Subscription {
     rpc Subscribe(SubscribeRequest) returns (stream SubscribeResponse);
+}
+
+message NodeInfoResponse {
+    // The chain identifier of the chain that this Node is on
+    sui.types.Digest chain_id = 1;
+
+    // Human readable name of the chain that this Node is on
+    string chain = 2;
+
+    // Current epoch of the Node based on its highest executed checkpoint
+    uint64 epoch = 3;
+
+    // Checkpoint height of the most recently executed checkpoint
+    uint64 checkpoint_height = 4;
+
+    // Unix timestamp of the most recently executed checkpoint
+    google.protobuf.Timestamp timestamp = 5;
+
+    // The lowest checkpoint for which checkpoints and transaction data is available
+    optional uint64 lowest_available_checkpoint = 6;
+
+    // The lowest checkpoint for which object data is available
+    optional uint64 lowest_available_checkpoint_objects = 7;
+
+    string software_version = 8;
 }
 
 message SubscribeRequest {
