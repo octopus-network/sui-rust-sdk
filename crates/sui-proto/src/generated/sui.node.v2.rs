@@ -303,7 +303,7 @@ pub mod node_client {
     }
 }
 /// Generated client implementations.
-pub mod subscription_client {
+pub mod subscriptions_client {
     #![allow(
         unused_variables,
         dead_code,
@@ -314,10 +314,10 @@ pub mod subscription_client {
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     #[derive(Debug, Clone)]
-    pub struct SubscriptionClient<T> {
+    pub struct SubscriptionsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
-    impl SubscriptionClient<tonic::transport::Channel> {
+    impl SubscriptionsClient<tonic::transport::Channel> {
         /// Attempt to create a new client by connecting to a given endpoint.
         pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
         where
@@ -328,7 +328,7 @@ pub mod subscription_client {
             Ok(Self::new(conn))
         }
     }
-    impl<T> SubscriptionClient<T>
+    impl<T> SubscriptionsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
         T::Error: Into<StdError>,
@@ -346,7 +346,7 @@ pub mod subscription_client {
         pub fn with_interceptor<F>(
             inner: T,
             interceptor: F,
-        ) -> SubscriptionClient<InterceptedService<T, F>>
+        ) -> SubscriptionsClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
             T::ResponseBody: Default,
@@ -360,7 +360,7 @@ pub mod subscription_client {
                 http::Request<tonic::body::BoxBody>,
             >>::Error: Into<StdError> + std::marker::Send + std::marker::Sync,
         {
-            SubscriptionClient::new(InterceptedService::new(inner, interceptor))
+            SubscriptionsClient::new(InterceptedService::new(inner, interceptor))
         }
         /// Compress requests with the given encoding.
         ///
@@ -410,11 +410,11 @@ pub mod subscription_client {
                 })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
-                "/sui.node.v2.Subscription/Subscribe",
+                "/sui.node.v2.Subscriptions/Subscribe",
             );
             let mut req = request.into_request();
             req.extensions_mut()
-                .insert(GrpcMethod::new("sui.node.v2.Subscription", "Subscribe"));
+                .insert(GrpcMethod::new("sui.node.v2.Subscriptions", "Subscribe"));
             self.inner.server_streaming(req, path, codec).await
         }
     }
@@ -595,7 +595,7 @@ pub mod node_server {
     }
 }
 /// Generated server implementations.
-pub mod subscription_server {
+pub mod subscriptions_server {
     #![allow(
         unused_variables,
         dead_code,
@@ -604,9 +604,9 @@ pub mod subscription_server {
         clippy::let_unit_value,
     )]
     use tonic::codegen::*;
-    /// Generated trait containing gRPC methods that should be implemented for use with SubscriptionServer.
+    /// Generated trait containing gRPC methods that should be implemented for use with SubscriptionsServer.
     #[async_trait]
-    pub trait Subscription: std::marker::Send + std::marker::Sync + 'static {
+    pub trait Subscriptions: std::marker::Send + std::marker::Sync + 'static {
         /// Server streaming response type for the Subscribe method.
         type SubscribeStream: tonic::codegen::tokio_stream::Stream<
                 Item = std::result::Result<super::SubscribeResponse, tonic::Status>,
@@ -619,14 +619,14 @@ pub mod subscription_server {
         ) -> std::result::Result<tonic::Response<Self::SubscribeStream>, tonic::Status>;
     }
     #[derive(Debug)]
-    pub struct SubscriptionServer<T> {
+    pub struct SubscriptionsServer<T> {
         inner: Arc<T>,
         accept_compression_encodings: EnabledCompressionEncodings,
         send_compression_encodings: EnabledCompressionEncodings,
         max_decoding_message_size: Option<usize>,
         max_encoding_message_size: Option<usize>,
     }
-    impl<T> SubscriptionServer<T> {
+    impl<T> SubscriptionsServer<T> {
         pub fn new(inner: T) -> Self {
             Self::from_arc(Arc::new(inner))
         }
@@ -677,9 +677,9 @@ pub mod subscription_server {
             self
         }
     }
-    impl<T, B> tonic::codegen::Service<http::Request<B>> for SubscriptionServer<T>
+    impl<T, B> tonic::codegen::Service<http::Request<B>> for SubscriptionsServer<T>
     where
-        T: Subscription,
+        T: Subscriptions,
         B: Body + std::marker::Send + 'static,
         B::Error: Into<StdError> + std::marker::Send + 'static,
     {
@@ -694,11 +694,11 @@ pub mod subscription_server {
         }
         fn call(&mut self, req: http::Request<B>) -> Self::Future {
             match req.uri().path() {
-                "/sui.node.v2.Subscription/Subscribe" => {
+                "/sui.node.v2.Subscriptions/Subscribe" => {
                     #[allow(non_camel_case_types)]
-                    struct SubscribeSvc<T: Subscription>(pub Arc<T>);
+                    struct SubscribeSvc<T: Subscriptions>(pub Arc<T>);
                     impl<
-                        T: Subscription,
+                        T: Subscriptions,
                     > tonic::server::ServerStreamingService<super::SubscribeRequest>
                     for SubscribeSvc<T> {
                         type Response = super::SubscribeResponse;
@@ -713,7 +713,7 @@ pub mod subscription_server {
                         ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
                             let fut = async move {
-                                <T as Subscription>::subscribe(&inner, request).await
+                                <T as Subscriptions>::subscribe(&inner, request).await
                             };
                             Box::pin(fut)
                         }
@@ -760,7 +760,7 @@ pub mod subscription_server {
             }
         }
     }
-    impl<T> Clone for SubscriptionServer<T> {
+    impl<T> Clone for SubscriptionsServer<T> {
         fn clone(&self) -> Self {
             let inner = self.inner.clone();
             Self {
@@ -773,8 +773,8 @@ pub mod subscription_server {
         }
     }
     /// Generated gRPC service name
-    pub const SERVICE_NAME: &str = "sui.node.v2.Subscription";
-    impl<T> tonic::server::NamedService for SubscriptionServer<T> {
+    pub const SERVICE_NAME: &str = "sui.node.v2.Subscriptions";
+    impl<T> tonic::server::NamedService for SubscriptionsServer<T> {
         const NAME: &'static str = SERVICE_NAME;
     }
 }

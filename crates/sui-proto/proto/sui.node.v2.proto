@@ -11,7 +11,7 @@ service Node {
     rpc GetNodeInfo(google.protobuf.Empty) returns (NodeInfoResponse);
 }
 
-service Subscription {
+service Subscriptions {
     rpc Subscribe(SubscribeRequest) returns (stream SubscribeResponse);
 }
 
